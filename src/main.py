@@ -1,3 +1,6 @@
+import json
+from typing import List
+
 class Product:
     product_count = 0
 
@@ -25,6 +28,48 @@ class Category:
 
     def __str__(self):
         return f"{self.name} - {self.description} - {self.products}"
+
+
+def load_data_from_json(file_path: str) -> List[Category]:
+    """Функция, которая загружает данные из JSON-файла и создает объекты Category и Product"""
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    categories = []
+
+    for category_data in data:
+        products = []
+        for product_data in category_data['products']:
+            product = Product(
+                name=product_data['name'],
+                description=product_data['description'],
+                price=float(product_data['price']),
+                quantity=int(product_data['quantity'])
+            )
+            products.append(product)
+
+        category = Category(
+            name=category_data['name'],
+            description=category_data['description'],
+            products=products
+        )
+        categories.append(category)
+
+    return categories
+
+# Пример использования
+if __name__ == "__main__":
+    # Загрузка данных из файла
+    loaded_categories = load_data_from_json('../products.json')
+
+    # Вывод информации о загруженных категориях и товарах
+    for category in loaded_categories:
+        print(category)
+        for product in category.products:
+            print(f"  {product}")
+
+    print(f"\nTotal categories: {Category.category_count}")
+    print(f"Total products: {Product.product_count}")
 
 if __name__ == "__main__":
     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)

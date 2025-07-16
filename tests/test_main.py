@@ -1,4 +1,3 @@
-import pytest
 from src.main import Product, Category
 
 # Тесты для класса Product
