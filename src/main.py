@@ -1,17 +1,18 @@
 import json
 from typing import List
 
+
 class Product:
     product_count = 0
 
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name, description, price, quantity):  # type: ignore
         self.name = name
         self.description = description
         self.price = price
         self.quantity = quantity
         Product.product_count += 1
 
-    def __str__(self):
+    def __str__(self):  # type: ignore
         return f"{self.name} - {self.description} - {self.price} - {self.quantity}"
 
 
@@ -19,48 +20,45 @@ class Category:
     category_count = 0
     product_count = 0
 
-    def __init__(self, name, description, products):
+    def __init__(self, name, description, products):  # type: ignore
         self.name = name
         self.description = description
         self.products = products
         Category.category_count += 1
         Category.product_count += len(products)
 
-    def __str__(self):
+    def __str__(self):  # type: ignore
         return f"{self.name} - {self.description} - {self.products}"
 
 
 def load_data_from_json(file_path: str) -> List[Category]:
     """Функция, которая загружает данные из JSON-файла и создает объекты Category и Product"""
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         data = json.load(file)
 
     categories = []
 
     for category_data in data:
         products = []
-        for product_data in category_data['products']:
+        for product_data in category_data["products"]:
             product = Product(
-                name=product_data['name'],
-                description=product_data['description'],
-                price=float(product_data['price']),
-                quantity=int(product_data['quantity'])
+                name=product_data["name"],
+                description=product_data["description"],
+                price=float(product_data["price"]),
+                quantity=int(product_data["quantity"]),
             )
             products.append(product)
 
-        category = Category(
-            name=category_data['name'],
-            description=category_data['description'],
-            products=products
-        )
+        category = Category(name=category_data["name"], description=category_data["description"], products=products)
         categories.append(category)
 
     return categories
 
+
 # Пример использования
 if __name__ == "__main__":
     # Загрузка данных из файла
-    loaded_categories = load_data_from_json('../products.json')
+    loaded_categories = load_data_from_json("../products.json")
 
     # Вывод информации о загруженных категориях и товарах
     for category in loaded_categories:
@@ -91,9 +89,11 @@ if __name__ == "__main__":
     print(product3.price)
     print(product3.quantity)
 
-    category1 = Category("Смартфоны",
-                         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-                         [product1, product2, product3])
+    category1 = Category(
+        "Смартфоны",
+        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        [product1, product2, product3],
+    )
 
     print(category1.name == "Смартфоны")
     print(category1.description)
@@ -101,10 +101,12 @@ if __name__ == "__main__":
     print(category1.category_count)
     print(category1.product_count)
 
-    product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
-    category2 = Category("Телевизоры",
-                         "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
-                         [product4])
+    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
+    category2 = Category(
+        "Телевизоры",
+        "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
+        [product4],
+    )
 
     print(category2.name)
     print(category2.description)

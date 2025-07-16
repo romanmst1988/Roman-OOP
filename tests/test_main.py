@@ -1,5 +1,6 @@
 from src.main import Product, Category
 
+
 # Тесты для класса Product
 class TestProduct:
     def test_product_initialization(self, sample_product):
@@ -39,18 +40,19 @@ class TestCategory:
         Category("Another Category", "Desc", [])
         assert Category.category_count == initial_count + 1
 
+
 # Тесты для подсчета продуктов и категорий
 class TestCounters:
     def test_product_counter(self):
         initial_count = Product.product_count
-        p1 = Product("P1", "D1", 1.0, 1)
-        p2 = Product("P2", "D2", 2.0, 2)
+        Product("P1", "D1", 1.0, 1)
+        Product("P2", "D2", 2.0, 2)
         assert Product.product_count == initial_count + 2
 
     def test_category_counter(self):
         initial_count = Category.category_count
-        c1 = Category("C1", "D1", [])
-        c2 = Category("C2", "D2", [])
+        Category("C1", "D1", [])
+        Category("C2", "D2", [])
         assert Category.category_count == initial_count + 2
 
     def test_products_in_category_counter(self, sample_products):

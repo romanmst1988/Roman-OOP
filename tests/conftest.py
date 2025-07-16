@@ -1,6 +1,6 @@
 import pytest
 
-from main import Product, Category
+from main import Category, Product
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def sample_products():
     return [
         Product("Product 1", "Desc 1", 10.0, 5),
         Product("Product 2", "Desc 2", 20.0, 3),
-        Product("Product 3", "Desc 3", 30.0, 7)
+        Product("Product 3", "Desc 3", 30.0, 7),
     ]
 
 
