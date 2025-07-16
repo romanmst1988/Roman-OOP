@@ -95,7 +95,9 @@ Python 3.7+
 
 bash
 python main.py
+
 ## Тестирование
+
 Для запуска тестов:
 
 bash
