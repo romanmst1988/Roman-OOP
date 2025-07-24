@@ -1,3 +1,5 @@
+from mypy.types import names
+
 from src.main import Product, Category
 
 
@@ -59,3 +61,7 @@ class TestCounters:
         initial_count = Category.product_count
         Category("Test", "Test", sample_products)
         assert Category.product_count == initial_count + len(sample_products)
+
+
+
+
