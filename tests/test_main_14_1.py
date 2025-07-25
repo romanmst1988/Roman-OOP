@@ -1,6 +1,6 @@
 from mypy.types import names
 
-from src.main import Product, Category
+from src.main_14_1 import Product, Category
 
 
 # Тесты для класса Product
