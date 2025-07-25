@@ -1,4 +1,6 @@
-from src.main import Product, Category
+from mypy.types import names
+
+from src.main_14_1 import Product, Category
 
 
 # Тесты для класса Product
@@ -59,3 +61,7 @@ class TestCounters:
         initial_count = Category.product_count
         Category("Test", "Test", sample_products)
         assert Category.product_count == initial_count + len(sample_products)
+
+
+
+
