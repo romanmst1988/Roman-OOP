@@ -1,4 +1,3 @@
-from itertools import product
 from typing import List
 
 
@@ -99,12 +98,11 @@ class Category:
         Добавляет продукт и увеличивает счетчик
         """
         if not isinstance(product, Product):  # ДОБАВЛЕНО: проверка на тип
-            raise TypeError(
-                "Можно добавить только объект класса Product или его наследника"
-            )
+            raise TypeError("Можно добавить только объект класса Product или его наследника")
 
         self.__products.append(product)
         Category.product_count += 1
+
 
 # if __name__ == "__main__":
 #     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
