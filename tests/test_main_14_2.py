@@ -76,8 +76,9 @@ class TestCategory:
         assert Category.category_count == 1
         assert Category.product_count == 2
 
-    def test_products_count_in_category(self, sample_category):
-        assert sample_category._Category__products_count == 2
-        new_product = Product("Product3", "Desc3", 300.0, 15)
-        sample_category.add_product(new_product)
-        assert sample_category._Category__products_count == 3
+
+def test():
+    category = Category("Игрушки", "Категория с игрушками", [])
+
+    with pytest.raises(TypeError):
+        category.add_product("не продукт")
