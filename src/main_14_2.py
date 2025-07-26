@@ -1,3 +1,4 @@
+from itertools import product
 from typing import List
 
 
@@ -93,10 +94,17 @@ class Category:
             products_str += f"{self.name}, {product.price} руб. Остаток: {self.product_count} шт.\n"
         return products_str
 
-    def add_product(self, products):
-        self.__products.append(products)
-        self.__products_count += 1  # Увеличиваем счетчик этой категории
+    def add_product(self, product: Product) -> None:
+        """
+        Добавляет продукт и увеличивает счетчик
+        """
+        if not isinstance(product, Product):  # ДОБАВЛЕНО: проверка на тип
+            raise TypeError(
+                "Можно добавить только объект класса Product или его наследника"
+            )
 
+        self.__products.append(product)
+        Category.product_count += 1
 
 # if __name__ == "__main__":
 #     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
