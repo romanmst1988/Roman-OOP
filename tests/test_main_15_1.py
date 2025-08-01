@@ -1,7 +1,7 @@
-from unittest.mock import patch
 import pytest
+
 from main_15_1 import Category, Product
-from typing import List
+
 
 def test_product_initialization():
     """Тест инициализации продукта"""
@@ -37,24 +37,19 @@ def test_product_price_setter_decrease_with_confirmation(monkeypatch):
     product = Product("Test Product", "Test Description", 100.0, 10)
 
     # Симулируем ввод 'y' (подтверждение понижения цены)
-    monkeypatch.setattr('builtins.input', lambda _: 'y')
+    monkeypatch.setattr("builtins.input", lambda _: "y")
     product.price = 80.0
     assert product.price == 80.0
 
     # Симулируем ввод 'n' (отмена понижения цены)
-    monkeypatch.setattr('builtins.input', lambda _: 'n')
+    monkeypatch.setattr("builtins.input", lambda _: "n")
     product.price = 70.0
     assert product.price == 80.0  # Цена осталась прежней
 
 
 def test_new_product_creation():
     """Тест создания нового продукта через классовый метод"""
-    product_data = {
-        "name": "New Product",
-        "description": "New Description",
-        "price": "150.0",
-        "quantity": "20"
-    }
+    product_data = {"name": "New Product", "description": "New Description", "price": "150.0", "quantity": "20"}
     product = Product.new_product(product_data, [])
     assert product.name == "New Product"
     assert product.price == 150.0
@@ -68,7 +63,7 @@ def test_new_product_duplicate_merge():
         "name": "Existing Product",  # То же имя, что и у existing_product
         "description": "New Description",
         "price": "120.0",
-        "quantity": "10"
+        "quantity": "10",
     }
     updated_product = Product.new_product(product_data, [existing_product])
     assert updated_product.quantity == 10  # Количество обновилось
