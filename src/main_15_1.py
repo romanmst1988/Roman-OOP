@@ -18,6 +18,9 @@ class Product:
         """Метод возвращает строку содержимого продуктов в заданном формате"""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
+    def __add__(self, other):
+        return (self.__price * self.quantity) + (other.__price * other.quantity)
+
     @property
     def price(self):
         return self.__price
@@ -113,12 +116,6 @@ class Category:
         Category.product_count += 1
 
 
-
-
-
-
-
-
 if __name__ == '__main__':
     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
@@ -138,6 +135,6 @@ if __name__ == '__main__':
 
     print(category1.products)
 
-    # print(product1 + product2)
-    # print(product1 + product3)
-    # print(product2 + product3)
+    print(product1 + product2)
+    print(product1 + product3)
+    print(product2 + product3)
