@@ -14,6 +14,10 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        """Метод возвращает строку содержимого продуктов в заданном формате"""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
     @property
     def price(self):
         return self.__price
@@ -86,6 +90,11 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products) if products else 0
 
+    def __str__(self):
+        """Метод возвращает строку содержимого категории в заданном формате"""
+        summ_products = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {summ_products} шт."
+
     @property
     def products(self):
         products_str = ""
@@ -129,6 +138,6 @@ if __name__ == '__main__':
 
     print(category1.products)
 
-    print(product1 + product2)
-    print(product1 + product3)
-    print(product2 + product3)
+    # print(product1 + product2)
+    # print(product1 + product3)
+    # print(product2 + product3)
