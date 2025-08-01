@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from main_14_2 import Category, Product  # Замените your_module на имя вашего файла
+from main_14_2 import Category, Product
 
 
 class TestProduct:
