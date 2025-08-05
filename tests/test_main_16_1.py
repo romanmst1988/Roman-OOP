@@ -1,6 +1,6 @@
 import pytest
-from typing import List
-from main_16_1 import Product, Category, Smartphone, LawnGrass
+
+from main_16_1 import Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct:
@@ -43,36 +43,26 @@ class TestProduct:
         product = Product("Телевизор", "4K OLED", 100000.0, 5)
 
         # Эмулируем ввод 'y' (подтверждение)
-        monkeypatch.setattr('builtins.input', lambda _: 'y')
+        monkeypatch.setattr("builtins.input", lambda _: "y")
         product.price = 90000.0
         assert product.price == 90000.0
 
         # Эмулируем ввод 'n' (отмена)
-        monkeypatch.setattr('builtins.input', lambda _: 'n')
+        monkeypatch.setattr("builtins.input", lambda _: "n")
         product.price = 80000.0
         assert product.price == 90000.0  # Цена осталась прежней
 
     def test_new_product_duplicate(self):
         """Тест создания нового продукта с дубликатом"""
         existing_products = [Product("Телевизор", "4K OLED", 100000.0, 5)]
-        new_product_data = {
-            "name": "Телевизор",
-            "description": "8K QLED",
-            "price": "150000.0",
-            "quantity": "3"
-        }
+        new_product_data = {"name": "Телевизор", "description": "8K QLED", "price": "150000.0", "quantity": "3"}
         new_product = Product.new_product(new_product_data, existing_products)
         assert new_product.price == 150000.0  # Выбрана максимальная цена
 
     def test_new_product_no_duplicate(self):
         """Тест создания нового продукта без дубликатов"""
         existing_products = [Product("Телевизор", "4K OLED", 100000.0, 5)]
-        new_product_data = {
-            "name": "Смартфон",
-            "description": "OLED",
-            "price": "80000.0",
-            "quantity": "10"
-        }
+        new_product_data = {"name": "Смартфон", "description": "OLED", "price": "80000.0", "quantity": "10"}
         new_product = Product.new_product(new_product_data, existing_products)
         assert new_product.name == "Смартфон"
         assert new_product not in existing_products
@@ -118,9 +108,7 @@ class TestSmartphone:
 
     def test_smartphone_initialization(self):
         """Тест инициализации смартфона"""
-        smartphone = Smartphone(
-            "iPhone", "Pro", 200000.0, 1, 95.0, "15", 256, "Black"
-        )
+        smartphone = Smartphone("iPhone", "Pro", 200000.0, 1, 95.0, "15", 256, "Black")
         assert smartphone.name == "iPhone"
         assert smartphone.price == 200000.0
         assert smartphone.efficiency == 95.0
@@ -134,9 +122,7 @@ class TestLawnGrass:
 
     def test_lawn_grass_initialization(self):
         """Тест инициализации газонной травы"""
-        grass = LawnGrass(
-            "Трава", "Зеленая", 500.0, 10, "Россия", "7 дней", "Зеленый"
-        )
+        grass = LawnGrass("Трава", "Зеленая", 500.0, 10, "Россия", "7 дней", "Зеленый")
         assert grass.name == "Трава"
         assert grass.price == 500.0
         assert grass.country == "Россия"

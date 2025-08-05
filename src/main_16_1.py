@@ -19,8 +19,8 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        """Метод сложения который позволяет складывать
-        товары только из одинаковых классов продуктов"""
+        """Метод сложения который складывает товары только из одинаковых классов продуктов"""
+
         if type(self) == type(other):
             return (self.__price * self.quantity) + (other.__price * other.quantity)
         raise TypeError("Нельзя складывать объекты разных классов")
@@ -123,6 +123,7 @@ class Category:
 
 class Smartphone(Product):
     """Новый класс наследник класса Product"""
+
     model: str
     memory: int
     color: str
@@ -134,8 +135,10 @@ class Smartphone(Product):
         self.memory = memory
         self.color = color
 
+
 class LawnGrass(Product):
     """Новый класс наследник класса Product"""
+
     country: str
     germination_period: str
     color: str
@@ -145,6 +148,7 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
+
 
 # if __name__ == '__main__':
 #     smartphone1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
