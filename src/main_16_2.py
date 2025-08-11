@@ -1,26 +1,59 @@
+from abc import ABC, abstractmethod
 from typing import List
 
 
-class Product:
+class ReprMixin:
+    """Миксин для вывода информации о создании объекта"""
+    def __init__(self, *args, **kwargs):
+        print(f"Создан объект {self.__class__.__name__} с параметрами:")
+        print(f"Позиционные аргументы: {args}")
+        print(f"Именованные аргументы: {kwargs}")
+        super().__init__(*args, **kwargs)
 
-    name: str
-    description: str
-    price: float
-    quantity: int
+    def __repr__(self):
+        attrs = ', '.join([f"{k}={v}" for k, v in self.__dict__.items()])
+        return f"{self.__class__.__name__}({attrs})"
 
-    def __init__(self, name, description, price, quantity) -> None:
+
+class BaseProduct(ABC):
+    """Абстрактный базовый класс для продуктов"""
+    @abstractmethod
+    def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
         self.description = description
-        self.__price = price
+        self.price = price
         self.quantity = quantity
 
+    @abstractmethod
     def __str__(self):
-        """Метод возвращает строку содержимого продуктов в заданном формате"""
+        pass
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, value):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def new_product(cls, product_data: dict, existing_products: list):
+        pass
+
+
+class Product(BaseProduct, ReprMixin):
+    """Класс продукта, наследующий от BaseProduct и ReprMixin"""
+    def __init__(self, name: str, description: str, price: float, quantity: int):
+        super().__init__(name=name, description=description, price=price, quantity=quantity)
+        self.__price = price
+
+    def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        """Метод сложения который складывает товары только из одинаковых классов продуктов"""
-
         if type(self) == type(other):
             return (self.__price * self.quantity) + (other.__price * other.quantity)
         raise TypeError("Нельзя складывать объекты разных классов")
@@ -35,7 +68,6 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
             return
 
-        # доп.задание при понижении цены (проверка цены)
         try:
             current_price = self.__price
             if new_price < current_price:
@@ -43,7 +75,7 @@ class Product:
                     f"Цена понижается с {current_price} до {new_price}."
                     f"Если хотите понизить цену введите 'y', либо вернуть текущую цену 'n': "
                 )
-                if confirmation.lower() != "y":
+                if confirmation.lower() != 'y':
                     print("Изменение цены отменено")
                     return
         except AttributeError:
@@ -53,16 +85,6 @@ class Product:
 
     @classmethod
     def new_product(cls, product_data: dict, existing_products: list):
-        """
-        Создает новый товар с проверкой на дубликаты
-        Параметры:
-        - product_data: словарь с данными товара
-        - existing_products: список существующих товаров для проверки
-        Возвращает: объект Product
-        """
-        if existing_products is None:
-            existing_products = []
-
         name = product_data["name"]
         description = product_data["description"]
         price = float(product_data["price"])
@@ -70,65 +92,16 @@ class Product:
 
         for existing_product in existing_products:
             if existing_product.name.lower() == name.lower():
-                existing_product.quantity = quantity  # Объединяем количество
-                existing_product.price = max(existing_product.price, price)  # Берём максимальную цену продукта
+                existing_product.quantity += quantity
+                existing_product.price = max(existing_product.price, price)
                 print(f"Товар {name} уже существует. Объединено количество и выбрана наибольшая цена")
                 return existing_product
 
-        return cls(name, description, price, quantity)  # Если дубликатов нет - создаем новый товар
-
-
-class Category:
-
-    name: str
-    description: str
-    products: List[Product]
-
-    category_count = 0
-    product_count = 0
-
-    def __init__(self, name, description, products) -> None:
-
-        self.name = name
-        self.description = description
-        self.__products = products if products else []
-        self.__products_count = len(products)  # Счетчик товаров конкретной категории
-
-        Category.category_count += 1
-        Category.product_count += len(products) if products else 0
-
-    def __str__(self):
-        """Метод возвращает строку содержимого категории в заданном формате"""
-        summ_products = sum(product.quantity for product in self.__products)
-        return f"{self.name}, количество продуктов: {summ_products} шт."
-
-    @property
-    def products(self):
-        products_str = ""
-        for product in self.__products:
-            products_str += f"{self.name}, {product.price} руб. Остаток: {self.product_count} шт.\n"
-        return products_str
-
-    def add_product(self, product: Product) -> None:
-        """метод, который добавляет продукт в категорию,
-        таким образом, чтобы не было возможности добавить
-        вместо продукта или его наследников любой другой объект
-        """
-        if not isinstance(product, Product):  # ДОБАВЛЕНО: проверка на тип
-            raise TypeError("Можно добавить только объект класса Product или его наследника")
-
-        self.__products.append(product)
-        Category.product_count += 1
+        return cls(name, description, price, quantity)
 
 
 class Smartphone(Product):
-    """Новый класс наследник класса Product"""
-
-    model: str
-    memory: int
-    color: str
-
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color) -> None:
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
@@ -137,18 +110,46 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
-    """Новый класс наследник класса Product"""
-
-    country: str
-    germination_period: str
-    color: str
-
-    def __init__(self, name, description, price, quantity, country, germination_period, color) -> None:
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
 
+
+class Category:
+    name: str
+    description: str
+    products: List[Product]
+
+    category_count = 0
+    product_count = 0
+
+    def __init__(self, name, description, products) -> None:
+        self.name = name
+        self.description = description
+        self.__products = products if products else []
+        self.__products_count = len(products)
+
+        Category.category_count += 1
+        Category.product_count += len(products) if products else 0
+
+    def __str__(self):
+        summ_products = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {summ_products} шт."
+
+    @property
+    def products(self):
+        products_str = ""
+        for product in self.__products:
+            products_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+        return products_str
+
+    def add_product(self, product: Product) -> None:
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавить только объект класса Product или его наследника")
+        self.__products.append(product)
+        Category.product_count += 1
 
 if __name__ == '__main__':
     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
