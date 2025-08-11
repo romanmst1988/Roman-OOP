@@ -1,8 +1,6 @@
 import pytest
-from io import StringIO
-import sys
-from unittest.mock import patch
-from main_16_2 import Product, Smartphone, LawnGrass, Category, BaseProduct
+
+from main_16_2 import BaseProduct, Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct:
@@ -37,12 +35,12 @@ class TestProduct:
         product = Product("Test", "Test desc", 100.0, 10)
 
         # Симулируем ввод 'n' (не подтверждаем понижение цены)
-        monkeypatch.setattr('builtins.input', lambda _: 'n')
+        monkeypatch.setattr("builtins.input", lambda _: "n")
         product.price = 80.0
         assert product.price == 100.0
 
         # Симулируем ввод 'y' (подтверждаем понижение цены)
-        monkeypatch.setattr('builtins.input', lambda _: 'y')
+        monkeypatch.setattr("builtins.input", lambda _: "y")
         product.price = 80.0
         assert product.price == 80.0
 
@@ -61,12 +59,7 @@ class TestProduct:
 
     def test_new_product_creation(self):
         """Тест создания нового продукта через классовый метод"""
-        product_data = {
-            "name": "New Product",
-            "description": "New Desc",
-            "price": "150.0",
-            "quantity": "7"
-        }
+        product_data = {"name": "New Product", "description": "New Desc", "price": "150.0", "quantity": "7"}
         product = Product.new_product(product_data, [])
         assert isinstance(product, Product)
         assert product.name == "New Product"
@@ -76,12 +69,7 @@ class TestProduct:
     def test_new_product_existing(self, capsys):
         """Тест создания нового продукта, когда такой уже существует"""
         existing_product = Product("Existing", "Desc", 100.0, 5)
-        product_data = {
-            "name": "Existing",
-            "description": "New Desc",
-            "price": "120.0",
-            "quantity": "3"
-        }
+        product_data = {"name": "Existing", "description": "New Desc", "price": "120.0", "quantity": "3"}
         result = Product.new_product(product_data, [existing_product])
         captured = capsys.readouterr()
         assert "Товар Existing уже существует" in captured.out
@@ -93,10 +81,7 @@ class TestProduct:
 class TestSmartphone:
     def test_smartphone_creation(self):
         """Тест создания смартфона"""
-        smartphone = Smartphone(
-            "Galaxy", "Desc", 1000.0, 10,
-            "High", "S23", "256GB", "Black"
-        )
+        smartphone = Smartphone("Galaxy", "Desc", 1000.0, 10, "High", "S23", "256GB", "Black")
         assert smartphone.name == "Galaxy"
         assert smartphone.price == 1000.0
         assert smartphone.quantity == 10
@@ -109,10 +94,7 @@ class TestSmartphone:
 class TestLawnGrass:
     def test_lawn_grass_creation(self):
         """Тест создания газонной травы"""
-        grass = LawnGrass(
-            "Premium", "Desc", 50.0, 100,
-            "Russia", "14 days", "Green"
-        )
+        grass = LawnGrass("Premium", "Desc", 50.0, 100, "Russia", "14 days", "Green")
         assert grass.name == "Premium"
         assert grass.price == 50.0
         assert grass.quantity == 100
@@ -143,10 +125,7 @@ class TestCategory:
         product1 = Product("Test1", "Desc1", 100.0, 5)
         product2 = Product("Test2", "Desc2", 200.0, 3)
         category = Category("Test", "Desc", [product1, product2])
-        expected_output = (
-            "Test1, 100.0 руб. Остаток: 5 шт.\n"
-            "Test2, 200.0 руб. Остаток: 3 шт.\n"
-        )
+        expected_output = "Test1, 100.0 руб. Остаток: 5 шт.\n" "Test2, 200.0 руб. Остаток: 3 шт.\n"
         assert category.products == expected_output
 
     def test_add_product(self):

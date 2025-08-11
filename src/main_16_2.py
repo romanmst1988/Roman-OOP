@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 from typing import List
 
 
-
 class ReprMixin:
     """Миксин для вывода информации о создании объекта"""
+
     def __init__(self, *args, **kwargs):
         print(f"Создан объект {self.__class__.__name__} с параметрами:")
         print(f"Позиционные аргументы: {args}")
@@ -12,12 +12,13 @@ class ReprMixin:
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
-        attrs = ', '.join([f"{k}={v}" for k, v in self.__dict__.items()])
+        attrs = ", ".join([f"{k}={v}" for k, v in self.__dict__.items()])
         return f"{self.__class__.__name__}({attrs})"
 
 
 class BaseProduct(ABC):
     """Абстрактный базовый класс для продуктов"""
+
     @abstractmethod
     def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
@@ -47,6 +48,7 @@ class BaseProduct(ABC):
 
 class Product(BaseProduct, ReprMixin):
     """Класс продукта, наследующий от BaseProduct и ReprMixin"""
+
     def __init__(self, name: str, description: str, price: float, quantity: int):
         super().__init__(name=name, description=description, price=price, quantity=quantity)
         self.__price = price
@@ -76,7 +78,7 @@ class Product(BaseProduct, ReprMixin):
                     f"Цена понижается с {current_price} до {new_price}."
                     f"Если хотите понизить цену введите 'y', либо вернуть текущую цену 'n': "
                 )
-                if confirmation.lower() != 'y':
+                if confirmation.lower() != "y":
                     print("Изменение цены отменено")
                     return
         except AttributeError:
@@ -152,6 +154,7 @@ class Category:
         self.__products.append(product)
         Category.product_count += 1
 
+
 # if __name__ == '__main__':
 #     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
 #     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
@@ -173,7 +176,8 @@ class Category:
 #     print(product3.quantity)
 #
 #     category1 = Category("Смартфоны",
-#                          "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+#                          "Смартфоны, как средство не только коммуникации, но и получения
+#                          дополнительных функций для удобства жизни",
 #                          [product1, product2, product3])
 #
 #     print(category1.name == "Смартфоны")
@@ -184,7 +188,8 @@ class Category:
 #
 #     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
 #     category2 = Category("Телевизоры",
-#                          "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
+#                          "Современный телевизор, который позволяет
+#                          наслаждаться просмотром, станет вашим другом и помощником",
 #                          [product4])
 #
 #     print(category2.name)
