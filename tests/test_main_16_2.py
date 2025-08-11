@@ -17,11 +17,6 @@ class TestProduct:
         product = Product("Test", "Test desc", 100.0, 10)
         assert str(product) == "Test, 100.0 руб. Остаток: 10 шт."
 
-    # def test_product_repr(self):
-    #     """Тест repr продукта"""
-    #     product = Product("Test", "Test desc", 100.0, 10)
-    #     assert repr(product) == "Product(_Product__price=100.0, name='Test', description='Test desc', quantity=10)"
-
     def test_price_setter_negative(self, capsys):
         """Тест установки отрицательной цены"""
         product = Product("Test", "Test desc", 100.0, 10)
