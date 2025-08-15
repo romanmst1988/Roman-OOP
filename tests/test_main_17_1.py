@@ -1,5 +1,6 @@
 import pytest
-from main_17_1 import Product, Smartphone, LawnGrass, Category
+
+from main_17_1 import Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct:
