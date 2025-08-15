@@ -53,6 +53,8 @@
 #     my_object.func3()
 
 
+
+# """Пользовательские исключения и инструкция raise"""
 class ShellException(Exception): # Базовый класс для исключений
     def __init__(self, *args, **kwargs):
         self.message = args[0] if args else "Ошибка обработки скрипта"
