@@ -1,3 +1,28 @@
+class Employee:
+    def __init__(self, first, last, pay):
+        self.first = first
+        self.last = last
+        self.pay = pay
+
+    def __add__(self, other):
+        if isinstance(other, Employee):
+            return self.pay + other.pay
+        elif isinstance(other, (int, float)):
+            return self.pay + other
+        raise TypeError
+
+if __name__ == "__main__":
+    emp_1 = Employee("Corey", "Schafer", 50000)
+    emp_2 = Employee("Borey", "Bufero", 50000)
+
+    print(emp_1 + emp_2)
+    print(emp_1 + 1000)
+    print(emp_1 + "123123")
+
+
+
+
+
 # # исключение по несуществующей переменной
 # try:
 #     print(a)
@@ -54,44 +79,44 @@
 
 
 
-# """Пользовательские исключения и инструкция raise"""
-class ShellException(Exception): # Базовый класс для исключений
-    def __init__(self, *args, **kwargs):
-        self.message = args[0] if args else "Ошибка обработки скрипта"
-
-    def __str__(self):
-        return self.message
-
-
-class ShellEmptyException(ShellException):
-    def __init__(self, *args, **kwargs):
-        self.message = args[0] if args else "Скрипт пустой"
-
-class ShellShebangException(ShellException):
-    def __init__(self, *args, **kwargs):
-        self.message = args[0] if args else "Отсутствует шебанг"
-
-
-class ShellScript: # интерфейс, который передаем пользователю
-    def __init__(self, content):
-        if not content:
-            raise ShellEmptyException()
-        elif content[0:2] != "#!":
-            raise ShellShebangException()
-        self.eval()
-
-    def eval(self):
-        pass
-
-
-if __name__ == "__main__":
-    # bash_content = ""
-    bash_content = "!/bin/bash"
-    try:
-        shell_script = ShellScript(bash_content)
-    except ShellEmptyException as e:
-        print(e)
-        print("Передайте не пустой файл скрипта")
-    except ShellShebangException as e:
-        print(e)
-        print("Валидация на шебанг не пройдена")
+# # """Пользовательские исключения и инструкция raise"""
+# class ShellException(Exception): # Базовый класс для исключений
+#     def __init__(self, *args, **kwargs):
+#         self.message = args[0] if args else "Ошибка обработки скрипта"
+#
+#     def __str__(self):
+#         return self.message
+#
+#
+# class ShellEmptyException(ShellException):
+#     def __init__(self, *args, **kwargs):
+#         self.message = args[0] if args else "Скрипт пустой"
+#
+# class ShellShebangException(ShellException):
+#     def __init__(self, *args, **kwargs):
+#         self.message = args[0] if args else "Отсутствует шебанг"
+#
+#
+# class ShellScript: # интерфейс, который передаем пользователю
+#     def __init__(self, content):
+#         if not content:
+#             raise ShellEmptyException()
+#         elif content[0:2] != "#!":
+#             raise ShellShebangException()
+#         self.eval()
+#
+#     def eval(self):
+#         pass
+#
+#
+# if __name__ == "__main__":
+#     # bash_content = ""
+#     bash_content = "!/bin/bash"
+#     try:
+#         shell_script = ShellScript(bash_content)
+#     except ShellEmptyException as e:
+#         print(e)
+#         print("Передайте не пустой файл скрипта")
+#     except ShellShebangException as e:
+#         print(e)
+#         print("Валидация на шебанг не пройдена")
